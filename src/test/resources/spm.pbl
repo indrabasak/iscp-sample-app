@@ -1,0 +1,36 @@
+########################################################################
+# Introscope ProbeBuilder List File   
+#
+# CA Wily Introscope(R) Version 9.5.5.0 Build 955049 
+# Copyright (c) 2013 CA. All Rights Reserved.
+# Introscope(R) is a registered trademark of CA.
+########################################################################
+
+###############################################################
+# This file contains a list of ProbeBuilder directives files. 
+# These files contain the default ProbeBuilder directives.    
+###############################################################
+
+
+#######################
+# List Title
+# ================
+
+Title: SOA Performance Management [Optimized]
+
+
+#######################
+# List Description
+# ================
+
+Description: Introscope settings for monitoring Web Services.
+
+#######################
+# Directives Files
+#
+# One directives file name per line.  Relative names are resolved against the location of this file.
+# ================
+
+webservices.pbd
+spm-correlation.pbd
+appmap-soa.pbd

@@ -1,0 +1,73 @@
+#########################
+# DBCP Support
+# ================
+
+### With Tomcat V5.5 the DBCP classes have been refactored
+### and repackaged into naming-factory-dbcp.jar
+
+### The following directives are specific to tomcat 5.5x and later versions
+IdentifyClassAs: org.apache.tomcat.dbcp.dbcp.PoolableConnectionFactory DBCPv55Tracing
+
+TraceOneMethodIfFlagged: DBCPv55Tracing makeObject MethodTraceIncrementor "DBCP|Connection Pool:Pool Size"
+TraceOneMethodIfFlagged: DBCPv55Tracing destroyObject MethodTraceDecrementor "DBCP|Connection Pool:Pool Size"
+TraceOneMethodIfFlagged: DBCPv55Tracing activateObject MethodTraceIncrementor "DBCP|Connection Pool:Objects In Use"
+TraceOneMethodIfFlagged: DBCPv55Tracing passivateObject MethodTraceDecrementor "DBCP|Connection Pool:Objects In Use"
+
+IdentifyClassAs: org.apache.tomcat.dbcp.pool.impl.GenericObjectPool DBCPv55Tracing
+TraceOneMethodIfFlagged: DBCPv55Tracing borrowObject MethodTraceIncrementor "DBCP|Connection Pool:Connections In Use"
+TraceOneMethodIfFlagged: DBCPv55Tracing returnObject MethodTraceDecrementor "DBCP|Connection Pool:Connections In Use"
+
+IdentifyClassAs: org.apache.tomcat.dbcp.dbcp.BasicDataSource DBCPv55Tracing
+## Choose blame or no blame
+#TraceOneMethodIfFlagged: DBCPv55Tracing getConnection BlamedMethodTimer "DBCP|getConnection:Average Response Time (ms)"
+TraceOneMethodIfFlagged: DBCPv55Tracing getConnection MethodTimer "DBCP|getConnection:Average Response Time (ms)"
+TraceOneMethodIfFlagged: DBCPv55Tracing getConnection PerIntervalCounter "DBCP|getConnection:Invocations Per Interval"
+TraceOneMethodIfFlagged: DBCPv55Tracing getConnection ConcurrentInvocationCounter "DBCP|getConnection:Concurrent Invocations"
+
+### End of the directives that are specific to tomcat 5.5x and later versions
+
+### Don't format the DBCP metric output.
+### Less readable metrics, but works on all Tomcat installs. 
+### Commented in by default.
+
+## JDBC Connection Pool via DBCP
+## See http://jakarta.apache.org/commons/dbcp/apidocs/org/apache/commons/dbcp/package-summary.html#package_description
+IdentifyClassAs: org.apache.commons.dbcp.PoolableConnectionFactory DBCPTracing
+IdentifyInheritedAs: org.apache.commons.dbcp.PoolableConnectionFactory	DBCPTracing
+
+TraceOneMethodIfFlagged: DBCPTracing makeObject()Ljava/lang/Object; MethodTraceIncrementor "DBCP:Connections In Pool (Drivers & DataSources)"
+TraceOneMethodIfFlagged: DBCPTracing destroyObject(Ljava/lang/Object;)V MethodTraceDecrementor "DBCP:Connections In Pool (Drivers & DataSources)"
+
+## http://jakarta.apache.org/commons/pool/
+### DataSource 
+# need wait time and increment for getConnection
+IdentifyClassAs: org.apache.commons.dbcp.PoolingDataSource DBCPTracing
+IdentifyInheritedAs: org.apache.commons.dbcp.PoolingDataSource DBCPTracing
+
+TraceOneMethodIfFlagged: DBCPTracing getConnection MethodTimer "DBCP|DataSource Pool:Average Wait to get a connection (ms)"
+TraceOneMethodIfFlagged: DBCPTracing getConnection MethodTraceIncrementor "DBCP|DataSource Pool:Connections in Use"
+TraceOneMethodIfFlagged: DBCPTracing returnObject MethodTraceDecrementor "DBCP|DataSource Pool:Connections in Use"
+TraceOneMethodIfFlagged: DBCPTracing evict MethodTraceDecrementor "DBCP|DataSource Pool:Connections in Use"
+
+### Pooling Driver
+IdentifyClassAs: org.apache.commons.dbcp.PoolingDriver DBCPTracing
+IdentifyInheritedAs: org.apache.commons.dbcp.PoolingDriver DBCPTracing
+
+TraceOneMethodIfFlagged: DBCPTracing getConnection MethodTimer "DBCP|Driver Pool:Average Wait For A Connection (ms)"
+TraceOneMethodIfFlagged: DBCPTracing getConnection MethodTraceIncrementor "DBCP|Driver Pool:Connections In Use"
+TraceOneMethodIfFlagged: DBCPTracing returnObject MethodTraceDecrementor "DBCP|Driver Pool:Connections In Use"
+TraceOneMethodIfFlagged: DBCPTracing evict MethodTraceDecrementor "DBCP|Driver Pool:Connections In Use"
+
+# ObjectPool  <http://nagoya.apache.org/gump/javadoc/jakarta-commons/pool/dist/docs/api/org/apache/commons/pool/ObjectPool.html>defines a trivially simple pooling interface: 
+#      public interface ObjectPool {
+#    Object borrowObject();
+#    void returnObject(Object borrowed);
+# }
+
+# This gets at the underlying implementation to the PoolingDataSource (and would therefore also get PoolingDriver)
+IdentifyClassAs: org.apache.commons.pool.impl.GenericObjectPool	DBCPTracing
+IdentifyInheritedAs: org.apache.commons.pool.impl.GenericObjectPool DBCPTracing
+
+TraceOneMethodIfFlagged: DBCPTracing borrowObject MethodTraceIncrementor "DBCP|Connection Pool:Connections In Use"
+TraceOneMethodIfFlagged: DBCPTracing returnObject MethodTraceDecrementor "DBCP|Connection Pool:Connections In Use"
+TraceOneMethodIfFlagged: DBCPTracing evict MethodTraceDecrementor "DBCP|Connection Pool:Connections In Use"

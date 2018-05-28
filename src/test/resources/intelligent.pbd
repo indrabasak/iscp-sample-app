@@ -1,0 +1,49 @@
+########################################################################
+# Introscope ProbeBuilder List File                              
+# 
+# Version: 9.5.5.0
+# Build: 955049
+#                                                                   
+# CA Introscope(R) Version 9.5.5.0 Release 9.5.5.0
+# Copyright (c) 2013 CA. All Rights Reserved.
+# Introscope(R) is a registered trademark of CA.
+########################################################################
+
+##########################################
+###				     #####	
+### For Intelligent Instrumentation  #####
+###				     #####	
+##########################################
+SkipIntelligentInstrumentationPackagePrefix: com.wily.
+SkipIntelligentInstrumentationPackagePrefix: java.
+SkipIntelligentInstrumentationPackagePrefix: javax.
+SkipIntelligentInstrumentationPackagePrefix: org.
+SkipIntelligentInstrumentationPackagePrefix: sun.
+SkipIntelligentInstrumentationPackagePrefix: com.sun.
+SkipIntelligentInstrumentationPackagePrefix: oracle.net.
+#SkipIntelligentInstrumentationPackagePrefix: com.ibm.ws.util.
+SkipIntelligentInstrumentationPackagePrefix: oracle.jdbc.driver.
+#SkipIntelligentInstrumentationPackagePrefix: com.ibm.ws.tx.util.
+#SkipIntelligentInstrumentationPackagePrefix: com.ibm.ejs.util.
+#SkipIntelligentInstrumentationPackagePrefix: com.ibm.ws.threadContext.
+#SkipIntelligentInstrumentationPackagePrefix: com.ibm.ejs.
+SkipIntelligentInstrumentationPackagePrefix: oracle.jdbc.
+#SkipIntelligentInstrumentationPackagePrefix: com.ibm.ws.util.
+SkipIntelligentInstrumentationPackagePrefix: com.ibm.ws.logging.object.
+#SkipIntelligentInstrumentationPackagePrefix: com.ibm.
+
+
+IncludeIntelligentInstrumentationPackagePrefix: org.apache.axis.
+IncludeIntelligentInstrumentationPackagePrefix: com.ibm.websphere.samples.
+
+
+SetFlag: IntelligentAllMethods
+TurnOn: IntelligentAllMethods
+
+SetTracerClassMapping: IntelligentInstrumentationTracer com.wily.introscope.agent.trace.intelligent.IntelligentInstrumentationTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerParameter: IntelligentInstrumentationTracer customAggregator intelligentAggregator
+
+IdentifyClassAs:  IntroscopeDummyClass IntelligentAllMethods
+TraceOneMethodIfFlagged: IntelligentAllMethods IntroscopeDummyMethod IntelligentInstrumentationTracer "IntelligentAllMethodsResource"
+
+

@@ -1,0 +1,16 @@
+############################################################
+# Tracer Group Definitions: Use this section to define the 
+# various tracer groups that will be used in the file
+############################################################
+SetFlag: MyFlag
+TurnOn: MyFlag
+
+############################################################
+# Probe Directives: Use this section to select what methods 
+# of the identified classes should be probed and which 
+# tracer should be use (and therefore which metrics should 
+# be generated)
+############################################################
+IdentifyClassAs: basaki.MySampleClass MyFlag
+IdentifyClassAs: basaki.MyApp MyFlag
+TraceAllMethodsIfFlagged: MyFlag BlamePointTracer "Sample Metrics|{classname}|{method}"
